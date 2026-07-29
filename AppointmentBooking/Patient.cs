@@ -19,12 +19,23 @@ namespace ENSE707_AppointmentBooking
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentException("Patient ID is required.");
+            if (!IsValidPatientId(id))
+                throw new ArgumentException("Patient ID must start with 'P' followed by digits (e.g., P001).");
             if (string.IsNullOrWhiteSpace(legalName))
                 throw new ArgumentException("Legal name is required.");
 
             Id = id;
             LegalName = legalName;
             PreferredName = preferredName;
+        }
+
+        private static bool IsValidPatientId(string id)
+        {
+            if (id.Length < 2)
+                return false;
+            if (id[0] != 'P')
+                return false;
+            return id.Substring(1).All(char.IsDigit);
         }
     }
 }
